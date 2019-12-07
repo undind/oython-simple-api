@@ -1,34 +1,137 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
-  description: This is the swagger file that goes with our server code
-  version: "1.0.0"
   title: Swagger REST Article
-consumes:
-  - "application/json"
-produces:
-  - "application/json"
-
-basePath: "/api"
-
-# Paths supported by the server application
+  description: This is the swagger file that goes with our server code
+  version: 0.1.9
+servers:
+  - url: http://localhost:5000/api
 paths:
   /people:
     get:
-      operationId: "people.read"
+      summary: Returns a list of users.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: people.read_all
       tags:
-        - "People"
-      summary: "The people data structure supported by the server application"
-      description: "Read the list of people"
-      responses:
-        200:
-          description: "Successful read people list operation"
+        - people
+      parameters:
+        - in: query
+          name: length
+          required: false
           schema:
-            type: "array"
-            items:
-              properties:
-                fname:
-                  type: "string"
-                lname:
-                  type: "string"
-                timestamp:
-                  type: "string"
+            type: integer
+          description: Number of people to get from people
+        - in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+          description: Offset from beginning of list where to start gathering people
+      responses:
+        '200':    # status code
+          description: Successfully read people list operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    fname:
+                      type: "string"
+                    lname:
+                      type: "string"
+                    timestamp:
+                      type: "string"
+
+    post:
+      operationId: people.create
+      summary: Create a person and add it to the people list
+      description: Create a new person in the people list
+      tags:
+        - people
+      parameters:
+        - in: body
+          name: person
+          description: Person to create
+          required: true
+          schema:
+            type: object
+            properties:
+              fname:
+                type: string
+                description: First name of person to create
+              lname:
+                type: string
+                description: Last name of person to create
+      responses:
+        '201':
+          description: Successfully created person in list
+
+  /people/{lname}:
+    get:
+      operationId: people.read_one
+      tags:
+        - people
+      summary: Read one person from the people list
+      description: Read one person from the people list
+      parameters:
+        - in: path
+          name: lname
+          description: Last name of the person to get from the list
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully read person from people list operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  fname:
+                    type: string
+                  lname:
+                    type: string
+                  timestamp:
+                    type: string
+
+    put:
+      operationId: people.update
+      tags:
+        - people
+      summary: Update a person in the people list
+      description: Update a person in the people list
+      parameters:
+        - in: path
+          name: lname
+          description: Last name of the person to update in the list
+          schema:
+            type: string
+          required: true
+        - in: body
+          name: person
+          schema:
+            type: object
+            properties:
+              fname:
+                type: string
+              lname:
+                type: string
+      responses:
+        '200':
+          description: Successfully updated person in people list
+
+    delete:
+      operationId: people.delete
+      tags:
+        - people
+      summary: Delete a person from the people list
+      description: Delete a person
+      parameters:
+        - in: path
+          name: lname
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully deleted a person from people list
