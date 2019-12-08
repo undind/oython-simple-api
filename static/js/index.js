@@ -6,7 +6,7 @@ ns.model = (function() {
     let $event_pump = $('body');
 
     return {
-        'read': function() {
+        read: function() {
             let ajax_options = {
                 type: 'GET',
                 url: 'api/people',
@@ -29,14 +29,13 @@ ns.model = (function() {
                 contentType: 'application/json',
                 dataType: 'json',
                 data: JSON.stringify({
-                    person: {
-                        'fname': fname,
-                        'lname': lname
-                    }
+                    'fname': fname,
+                    'lname': lname
                 })
             };
             $.ajax(ajax_options)
             .done(function(data) {
+                console.log(data)
                 $event_pump.trigger('model_create_success', [data]);
             })
             .fail(function(xhr, textStatus, errorThrown) {
@@ -63,7 +62,7 @@ ns.model = (function() {
                 $event_pump.trigger('model_error', [xhr, textStatus, errorThrown]);
             })
         },
-        'delete': function(lname) {
+        delete: function(lname) {
             let ajax_options = {
                 type: 'DELETE',
                 url: 'api/people/' + lname,
@@ -131,7 +130,7 @@ ns.controller = (function(m, v) {
 
     setTimeout(function() {
         model.read();
-    }, 100)
+    }, 0)
 
     function validate(fname, lname) {
         return fname !== "" && lname !== "";
@@ -144,7 +143,8 @@ ns.controller = (function(m, v) {
         e.preventDefault();
 
         if (validate(fname, lname)) {
-            model.create(fname, lname)
+            model.create(fname, lname);
+            model.read();
         } else {
             alert('Problem with first or last name input');
         }
@@ -217,7 +217,7 @@ ns.controller = (function(m, v) {
     });
 
     $event_pump.on('model_error', function(e, xhr, textStatus, errorThrown) {
-        let error_msg = textStatus + ': ' + errorThrown + ' - ' + xhr.responseJSON.detail;
+        let error_msg = textStatus + ': ' + errorThrown;
         view.error(error_msg);
         console.log(error_msg);
     })
