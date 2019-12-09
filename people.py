@@ -1,6 +1,6 @@
 from flask import abort, make_response
 from config import db
-from models import (Person, PersonSchema)
+from models import Person, PersonSchema, Note
 
 
 # Create a handler for our read (GET) people
@@ -27,7 +27,7 @@ def read_one(person_id):
     :return:            person matching ID
     """
     # Get the person requested
-    person = Person.query.filter(Person.person_id == person_id).one_or_none()
+    person = Person.query.filter(Person.person_id == person_id).outerjoin(Note).one_or_none()
 
     if person is not None:
 
@@ -86,8 +86,6 @@ def create(person):
 def update(person_id, person):
     """
     This function updates an existing person in the people structure
-    Throws an error if a person with the name we want to update to
-    already exists in the database.
     :param person_id:   Id of the person to update in the people structure
     :param person:      person to update
     :return:            updated person structure
@@ -97,51 +95,28 @@ def update(person_id, person):
         Person.person_id == person_id
     ).one_or_none()
 
-    # Try to find an existing person with the same name as the update
-    fname = person.get("fname")
-    lname = person.get("lname")
+    # Did we find an existing person?
+    if update_person is not None:
 
-    existing_person = (
-        Person.query.filter(Person.fname == fname)
-            .filter(Person.lname == lname)
-            .one_or_none()
-    )
-
-    # Are we trying to find a person that does not exist?
-    if update_person is None:
-        abort(
-            404,
-            "Person not found for Id: {person_id}".format(person_id=person_id),
-        )
-
-    # Would our update create a duplicate of another person already existing?
-    elif (
-            existing_person is not None and existing_person.person_id != person_id
-    ):
-        abort(
-            409,
-            "Person {fname} {lname} exists already".format(
-                fname=fname, lname=lname
-            ),
-        )
-
-        # Otherwise go ahead and update!
-    else:
         # turn the passed in person into a db object
         schema = PersonSchema()
-        updated = schema.load(person, session=db.session)
+        update = schema.load(person, session=db.session)
 
         # Set the id to the person we want to update
-        updated.person_id = update_person.person_id
+        update.person_id = update_person.person_id
 
         # merge the new object into the old and commit it to the db
-        db.session.merge(updated)
+        db.session.merge(update)
         db.session.commit()
 
         # return updated person in the response
         data = schema.dump(update_person)
 
         return data, 200
+
+    # Otherwise, nope, didn't find that person
+    else:
+        abort(404, f"Person not found for Id: {person_id}")
 
 
 def delete(person_id):
