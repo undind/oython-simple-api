@@ -1,5 +1,6 @@
 from datetime import datetime
 from config import db, ma
+from marshmallow import fields
 
 
 class Person(db.Model):
@@ -33,3 +34,33 @@ class PersonSchema(ma.ModelSchema):
     class Meta:
         model = Person
         sqla_session = db.session
+
+    notes = fields.Nested('PersonNoteSchema', default=[], many=True)
+
+
+class PersonNoteSchema(ma.ModelSchema):
+    """
+    This class exists to get around a recursion issue
+    """
+    note_id = fields.Int()
+    person_id = fields.Int()
+    content = fields.Str()
+    timestamp = fields.Str()
+
+
+class NoteSchema(ma.ModelSchema):
+    class Meta:
+        model = Note
+        sqla_session = db.session
+
+    person = fields.Nested('NotePersonSchema', default=None)
+
+
+class NotePersonSchema(ma.ModelSchema):
+    """
+    This class exists to get around a recursion issue
+    """
+    person_id = fields.Int()
+    lname = fields.Str()
+    fname = fields.Str()
+    timestamp = fields.Str()
