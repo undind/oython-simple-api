@@ -42,6 +42,9 @@ class PersonNoteSchema(ma.ModelSchema):
     """
     This class exists to get around a recursion issue
     """
+    def __init__(self, **kwargs):
+        super().__init__(strict=True, **kwargs)
+
     note_id = fields.Int()
     person_id = fields.Int()
     content = fields.Str()
@@ -49,6 +52,9 @@ class PersonNoteSchema(ma.ModelSchema):
 
 
 class NoteSchema(ma.ModelSchema):
+    def __init__(self, **kwargs):
+        super().__init__(strict=True, **kwargs)
+
     class Meta:
         model = Note
         sqla_session = db.session
@@ -60,6 +66,9 @@ class NotePersonSchema(ma.ModelSchema):
     """
     This class exists to get around a recursion issue
     """
+    def __init__(self, **kwargs):
+        super().__init__(strict=True, **kwargs)
+
     person_id = fields.Int()
     lname = fields.Str()
     fname = fields.Str()
