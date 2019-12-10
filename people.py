@@ -100,13 +100,13 @@ def update(person_id, person):
 
         # turn the passed in person into a db object
         schema = PersonSchema()
-        update = schema.load(person, session=db.session)
+        updated = schema.load(person, session=db.session)
 
         # Set the id to the person we want to update
-        update.person_id = update_person.person_id
+        updated.person_id = update_person.person_id
 
         # merge the new object into the old and commit it to the db
-        db.session.merge(update)
+        db.session.merge(updated)
         db.session.commit()
 
         # return updated person in the response
