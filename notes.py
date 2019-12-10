@@ -13,7 +13,7 @@ def read_all():
     notes = Note.query.order_by(db.desc(Note.timestamp)).all()
 
     # Serialize the list of notes from our data
-    note_schema = NoteSchema(many=True, exclude=['person'])
+    note_schema = NoteSchema(many=True)
     data = note_schema.dump(notes)
     return data
 
