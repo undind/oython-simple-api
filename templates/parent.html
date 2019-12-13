@@ -30,9 +30,9 @@
 {% block javascript %}
 <script>
     Handlebars.registerHelper('formatTimestamp', function(timestamp) {
-        "use strict";
+        console.log(timestamp)
         let mt = moment(timestamp, moment.ISO_8601);
-        return mt.format('Y-MM-DD HH:mm:ssZ');
+        return mt.format('Y-MM-DD HH:mm:ss');
     });
 </script>
 {% endblock %}
