@@ -28,14 +28,14 @@
     {% endblock %}
 </body>
 
-    {% block javascript %}
-    <script>
-        Handlebars.registerHelper('formatTimestamp', function(timestamp) {
-            "use strict";
-            let mt = moment(timestamp, moment.ISO_8601);
-            return mt.format('Y-MM-DD HH:mm:ssZ');
-        });
-    </script>
-    {% endblock %}
+{% block javascript %}
+<script>
+    Handlebars.registerHelper('formatTimestamp', function(timestamp) {
+        "use strict";
+        let mt = moment(timestamp, moment.ISO_8601);
+        return mt.format('Y-MM-DD HH:mm:ssZ');
+    });
+</script>
+{% endblock %}
 
 </html>
