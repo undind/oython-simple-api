@@ -5,7 +5,7 @@ ns.model = (function() {
 
     return {
         read: () => {
-            let ajax_options = {
+            const ajax_options = {
                 type: 'GET',
                 url: '/api/notes',
                 accepts: 'application/json',
