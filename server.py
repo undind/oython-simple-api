@@ -38,6 +38,7 @@ def notes(person_id, note_id=""):
     """
     This function responds to the browser URL
     localhost:5000/notes/<person_id>
+    :param note_id:     Id of the note
     :param person_id:   Id of the person to show notes for
     :return:            the rendered template "notes.html"
     """

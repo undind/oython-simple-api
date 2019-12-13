@@ -1,10 +1,10 @@
-let ns = {};
+const ns = {};
 
 // Create the model instance
 ns.model = (function() {
 
     return {
-        read: function () {
+        read: () => {
             let ajax_options = {
                 type: 'GET',
                 url: '/api/notes',
@@ -24,7 +24,7 @@ ns.view = (function() {
     let table = $('.blog table');
 
     return {
-        build_table: function(data) {
+        build_table: (data) => {
             let source = $('#blog-table-template').html();
             let template = Handlebars.compile(source);
             let html = template({ notes: data });
@@ -49,23 +49,22 @@ ns.controller = (function(m, v) {
             .fail((xhr, textStatus, errorThrow) => {
                 error_handler(xhr, textStatus, errorThrow)
             })
-    }, 0)
+    }, 0);
     
     function error_handler(xhr, textStatus, errorThrow) {
-        console.log(xhr)
-        let errorsMessage = `${textStatus}: ${errorThrow} - ${xhr.responseBody}`;
+        let errorsMessage = `${textStatus}: ${errorThrow} - ${xhr.responseJSON.detail}`;
 
         view.error(errorsMessage);
     }
 
-    $('table').on('doubleclick', 'tbody td.name', e => {
+    $('table').on('dblclick', 'tbody td.name', e => {
         let target = $(e.target).parent();
         let personId = target.data('person_id')
 
         window.location = `/people/${personId}`;
     })
 
-    $('table').on('doubleclick', 'tbody td.content', e => {
+    $('table').on('dblclick', 'tbody td.content', e => {
         let target = $(e.target).parent();
         let personId = target.data('person_id');
         let noteId = target.data('note_id')

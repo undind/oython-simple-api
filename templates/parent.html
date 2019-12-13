@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     {% block head %}
     <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
-    <link rel="stylesheet" href="../static/css/parent.css">
+    <link rel="stylesheet" href="/static/css/parent.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.5.3/handlebars.min.js"></script>
@@ -29,8 +29,7 @@
 
 {% block javascript %}
 <script>
-    Handlebars.registerHelper('formatTimestamp', function(timestamp) {
-        console.log(timestamp)
+    Handlebars.registerHelper('formatTimestamp', (timestamp) => {
         let mt = moment(timestamp, moment.ISO_8601);
         return mt.format('Y-MM-DD HH:mm:ss');
     });
