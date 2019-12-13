@@ -4,28 +4,34 @@ body, .ui-btn {
 
 .navigation {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 15px 10px 15px 10px;
     border-bottom: 2px solid darkgrey;
     background-color: whitesmoke;
 }
 
-.navigation a {
-    margin-right: 10px;
+.page__button {
     padding: 5px;
     border: 1px solid darkgrey;
     border-radius: 4px;
     text-decoration: none;
     cursor: pointer;
-    text: black;
+    color: black;
     background-color: lightskyblue;
+    margin-right: 10px;
 }
 
-.navigation .page_name {
-    flex-grow: 2;
+.page__button:last-child {
+    margin-right: 0;
+}
+
+.page_name {
     text-align: center;
     font-size: 1.5em;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .navigation a:hover {
@@ -33,7 +39,9 @@ body, .ui-btn {
 }
 
 .container {
-    padding: 10px;
+    max-width: 1200px;
+    width: 95%;
+    margin: 20px auto;
 }
 
 .error {

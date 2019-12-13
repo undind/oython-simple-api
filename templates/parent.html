@@ -14,14 +14,13 @@
 </head>
 <body>
     <div class="navigation">
-        <span class="buttons">
-            <a href="/">Home</a>
-            <a href="/people">People</a>
-        </span>
         <span class="page_name">
             <div>{% block page_name%}{% endblock %}</div>
         </span>
-        <span class="spacer"></span>
+        <nav class="buttons">
+            <a href="/" class="page__button">Home</a>
+            <a href="/people" class="page__button">People</a>
+        </nav>
     </div>
 
     {% block body %}
